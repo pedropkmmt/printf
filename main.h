@@ -8,4 +8,5 @@ int printf_string(va_list, val);
 int _strlen(char *str);
 int _strlent(const char *str);
 int printf_37(void);
+int printf_bin(va_list val);
 #endif
