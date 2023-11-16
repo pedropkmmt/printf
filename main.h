@@ -15,10 +15,11 @@ typedef struct format
 {
 	char *id;
 	int (*function)();
-}form;
+}formit;
 
 int _putchar(char c);
 int _printf(const char *format, ...);
+void print_formit(char formit[], int *form_ind);
 int printf_char(va_list val);
 int printf_string(va_list val);
 int _strlen(char *str);

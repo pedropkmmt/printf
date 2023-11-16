@@ -1,4 +1,7 @@
 #include "main.h"
+
+void print_formit(char formit[], int *form_ind);
+
 /**
  * printf - main function
  * @format - structure
@@ -6,48 +9,60 @@
  */
 int _printf(const char *format, ...)
 {
-	form f[] = 
-	{
-	{"%c", printf_char},
-	{"%s", printf_string},
-	{"%%", print_percen},
-	{"%d", printf_dec}, 
-	{"%i", printf_int},
-	{"%r", printf_r},
-	{"%R", printf_rot},
-	{"%b", printf_bin},
-	{"%u", printf_unisgned},
-	{"%o", print_o},
-	{"%x",  printf_x},
-	{"%X", printf_X},
-	{"%S", printf_ts},
-	{"%p", printf_pointer}
-	};
-	va_list args;
-	int i = 0, len = 0;
-	int p;
+	int i; 
+	int a = 0; 
+	int c = 0;
+	int flags, width, p, size, form_ind = 0;
+	va_list list;
+	char formit[FORM_SIZE];
 
-	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+	if (format == NULL)
 		return (-1);
-GO:
-	while (format[i] == '\0')
+
+	va_start(list, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		p = 13;
-		while (p >= 0)
+		if (format[i] != '%')
 		{
-			if (f[p].id[0] == format[i] && f[p].id[1] == format[i + 1])
-			{
-				len = len + f[p].function(args);
-				i = i + 2;
-				goto GO;
-			}
-			p--;
+			formit[form_ind++] = format[i];
+			if (form_ind == FORM_SIZE)
+				print_formit(formit, &form_ind);
+			c++;
 		}
-		_putchar(format[i]);
-		i++;
-		len++;
+		else
+		{
+			print_formit(formit, &form_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			p = get_p(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			a = handle_print(format, &i, list, formit,
+				flags, width, p, size);
+			if (a == -1)
+				return (-1);
+			c += a;
+		}
 	}
-	va_end(args);
-	return (len);
+
+	print_formit(formit, &form_ind);
+
+	va_end(list);
+
+	return (c);
+}
+
+/**
+ * print_formit - main function
+ * @buffer: array
+ * @buff_ind: Index
+ */
+void print_formit(char formit[], int *form_ind)
+{
+	if (*form_ind > 0)
+	write(1, &formit[0], *form_ind);
+
+	*form_ind = 0;
+
 }
