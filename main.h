@@ -11,16 +11,6 @@
  * @functtion: function
  */
 
-typedef struct format
-{
-	char *id;
-	int (*function)();
-}formit;
-
 int _putchar(char c);
 int _printf(const char *format, ...);
-void print_buffer(char buffer[], int *buff_ind);
-
-
 #endif
-
