@@ -11,20 +11,18 @@ int _printf(const char *format, ...)
 {
 	int car = 0;
 	va_list args_list;
-	
+
 	if (format == NULL)
-	{
 		return (-1);
-	}
 
 	va_start(args_list, format);
 
-	while(*format)
+	while (*format)
 	{
 		if (*format != '%')
 		{
 			write(1, format, 1);
-			c++;
+			car++;
 		}
 		else
 		{
@@ -37,21 +35,21 @@ int _printf(const char *format, ...)
 				write(1, format, 1);
 				car++;
 			}
-			else if(*format == 'c')
+			else if (*format == 'c')
 			{
 				char c = va_arg(args_list, int);
-				write(1, &c , 1);
+				write(1, &c, 1);
 				car++;
 			}
 			else if (*format == 's')
 			{
 				char *str = va_arg(args_list, char*);
-				int len = 0;
+				int str_len = 0;
 
-				while (str[len] != '\0')
-					len++;
-				write(1, str, len);
-				car += len;
+				while (str[str_len] != '\0')
+					str_len++;
+				write(1, str, str_len);
+				car += str_len;
 			}
 		}
 		format++;
